@@ -14,7 +14,7 @@ import { ThemedText } from "./ThemedText";
 import { addSavedPlace, removeSavedPlace } from "@/store/eventSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "expo-router";
-import { useSavePlaceActions } from "@/utils";
+import { useSavePlaceActions } from "@/utils/utils";
 
 const { width } = Dimensions.get("window");
 

@@ -1,6 +1,12 @@
-import { Tabs } from "expo-router";
+import { router, Tabs } from "expo-router";
 import React from "react";
-import { Platform, Text, View } from "react-native";
+import {
+  Platform,
+  Text,
+  Touchable,
+  TouchableOpacity,
+  View,
+} from "react-native";
 
 import { HapticTab } from "@/components/HapticTab";
 import { IconSymbol } from "@/components/ui/IconSymbol";
@@ -27,16 +33,21 @@ export default function TabLayout() {
               Walker
             </Text>
           </View>
-        ), // Custom component for title
-        // headerRight: () => (
-        //   <IconSymbol
-        //     size={38}
-        //     name="circle.fill"
-        //     color={Colors[colorScheme ?? "light"].icon}
-        //     style={{ margin: 20 }}
-        //   />
-        // ), // Custom component for right side
-        // headerLeft: () => <Text>left button</Text>, // Custom component for left side
+        ),
+        headerRight: () => (
+          <TouchableOpacity
+            onPress={() => {
+              router.push("/pages/userInfo");
+            }}
+          >
+            <IconSymbol
+              size={38}
+              name="circle.fill"
+              color={Colors[colorScheme ?? "light"].icon}
+              style={{ margin: 20 }}
+            />
+          </TouchableOpacity>
+        ), // Custom component for right side
         tabBarActiveTintColor: Colors[colorScheme ?? "light"].tint,
         headerShown: isLoading ? false : true,
         tabBarButton: HapticTab,
@@ -64,7 +75,16 @@ export default function TabLayout() {
         options={{
           title: "",
           tabBarIcon: ({ color }) => (
-            <IconSymbol size={28} name="paperplane.fill" color={color} />
+            <IconSymbol size={28} name="map.fill" color={color} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="camScan"
+        options={{
+          title: "",
+          tabBarIcon: ({ color }) => (
+            <IconSymbol size={35} name="camera.fill" color={color} />
           ),
         }}
       />
@@ -73,7 +93,7 @@ export default function TabLayout() {
         options={{
           title: "",
           tabBarIcon: ({ color }) => (
-            <IconSymbol size={28} name="map.fill" color={color} />
+            <IconSymbol size={28} name="paperplane.fill" color={color} />
           ),
         }}
       />
@@ -82,16 +102,7 @@ export default function TabLayout() {
         options={{
           title: "",
           tabBarIcon: ({ color }) => (
-            <IconSymbol size={28} name="bookmark.fill" color={color} />
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="account/index"
-        options={{
-          title: "",
-          tabBarIcon: ({ color }) => (
-            <IconSymbol size={28} name="person.fill" color={color} />
+            <IconSymbol size={28} name="heart.fill" color={color} />
           ),
         }}
       />

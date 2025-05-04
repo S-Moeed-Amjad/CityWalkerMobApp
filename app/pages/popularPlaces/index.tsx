@@ -1,22 +1,11 @@
-import {
-  StyleSheet,
-  Image,
-  Platform,
-  SafeAreaView,
-  FlatList,
-  View,
-} from "react-native";
+import { StyleSheet, SafeAreaView, View } from "react-native";
 
-import { Collapsible } from "@/components/Collapsible";
-import { ExternalLink } from "@/components/ExternalLink";
 import ParallaxScrollView from "@/components/ParallaxScrollView";
 import { ThemedText } from "@/components/ThemedText";
-import { ThemedView } from "@/components/ThemedView";
-import { IconSymbol } from "@/components/ui/IconSymbol";
 import PopularListCard from "@/components/PopularListingCard";
 import { useSelector } from "react-redux";
 import MultiSelectDropdown from "@/components/filterDropdown";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function PopularPlacesScreen() {
   const popularPlacesList = useSelector(
@@ -35,9 +24,6 @@ export default function PopularPlacesScreen() {
     );
     return hasCommonType;
   });
-
-  console.log("filteredEvents", filteredEvents);
-
   return (
     <ParallaxScrollView
       headerBackgroundColor={{ light: "#D0D0D0", dark: "#353636" }}
@@ -50,7 +36,7 @@ export default function PopularPlacesScreen() {
         setItems={setItems}
       />
       <SafeAreaView style={{ minHeight: 155 }}>
-        {value
+        {value?.length
           ? filteredEvents?.map((item: any) => (
               <View key={item.id}>
                 <PopularListCard item={item} />

@@ -30,7 +30,7 @@ export default function MultiSelectDropdown({
         dropDownContainerStyle={styles.dropdownContainer}
         textStyle={styles.text}
         listItemLabelStyle={styles.text}
-        selectedItemLabelStyle={{}} // Remove any styling for selected items
+        selectedItemLabelStyle={{}}
         labelStyle={styles.text}
         listMode="SCROLLVIEW"
       />

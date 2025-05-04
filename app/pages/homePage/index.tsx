@@ -13,11 +13,13 @@ import { ThemedView } from "@/components/ThemedView";
 import PopularCarosel from "./components/popularList";
 import EventCarosel from "./components/eventsList";
 import SavedCarosel from "./components/savedList";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import LoadPlacesOnStart from "@/app/helper";
 import LoadingScreen from "./components/LoadingScreen";
 import { useEffect, useRef } from "react";
 import { useRouter } from "expo-router";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { setUserDetails } from "@/store/eventSlice";
 
 const HomeScreen = () => {
   const popularPlacesList = useSelector(
@@ -36,7 +38,21 @@ const HomeScreen = () => {
       useNativeDriver: true,
     }).start();
   }, []);
+  const dispatch = useDispatch();
 
+  useEffect(() => {
+    const checkSession = async () => {
+      const token = await AsyncStorage.getItem("userToken");
+      const userDetails = await AsyncStorage.getItem("userDetails");
+
+      dispatch(setUserDetails(userDetails));
+      if (!token) {
+        // Navigate to home or set authenticated state
+        router.push("/pages/LoginScreen");
+      }
+    };
+    checkSession();
+  }, []);
   return isLoading ? (
     <>
       <LoadPlacesOnStart />
@@ -46,16 +62,13 @@ const HomeScreen = () => {
     <ParallaxScrollView
       headerBackgroundColor={{ light: "#A1CEDC", dark: "#1D3D47" }}
     >
-      {/* <ThemedView style={styles.emptyView}></ThemedView> */}
-      {/* <LoadPlacesOnStart /> */}
-
       <ThemedView style={styles.titleContainer}>
         <Animated.View style={[{ transform: [{ translateY: slideAnim }] }]}>
           <View
             style={{
               justifyContent: "space-between",
               display: "flex",
-              flexDirection: "row" /* Horizontal layout */,
+              flexDirection: "row",
               alignItems: "center",
               width: "100%",
             }}

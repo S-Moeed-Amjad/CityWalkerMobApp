@@ -1,6 +1,6 @@
 // utils/storage.ts
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { addSavedPlace, removeSavedPlace } from "./store/eventSlice";
+import { addSavedPlace, removeSavedPlace } from "../store/eventSlice";
 import { useDispatch } from "react-redux";
 import { Alert, View } from "react-native";
 import * as Location from "expo-location";
@@ -12,14 +12,6 @@ import {
 
 import { faStar as emptyStar } from "@fortawesome/free-regular-svg-icons";
 const STORAGE_KEY = "saved_places";
-
-const savePlacesToStorage = async (places: any[]) => {
-  try {
-    await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(places));
-  } catch (error) {
-    console.error("Failed to save places:", error);
-  }
-};
 
 const getPlacesFromStorage = async (): Promise<any[] | null> => {
   try {
@@ -129,8 +121,8 @@ const StarRating = ({
     </View>
   );
 };
+
 export {
-  savePlacesToStorage,
   getPlacesFromStorage,
   getDateRangeForMonth,
   fetchLocation,

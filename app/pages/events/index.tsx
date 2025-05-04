@@ -29,7 +29,7 @@ export default function EventsScreen() {
   ]);
 
   const filteredEvents = EventsList?.filter((item: any) => {
-    return item?.EventCode === value;
+    return value !== "NONE" ? item?.EventCode === value : true;
   });
 
   return (
@@ -45,17 +45,9 @@ export default function EventsScreen() {
         isMulti={false}
       />
       <SafeAreaView style={{ minHeight: 155 }}>
-        {value
-          ? filteredEvents?.map((item: any) => (
-              <View key={item.id}>
-                <PopularListCard item={item} isSaveable={false} />
-              </View>
-            ))
-          : EventsList?.map((item: any) => (
-              <View key={item.id}>
-                <PopularListCard item={item} isSaveable={false} />
-              </View>
-            ))}
+        {(value ? filteredEvents : EventsList)?.map((item: any) => (
+          <PopularListCard key={item.id} item={item} isSaveable={false} />
+        ))}
       </SafeAreaView>
     </ParallaxScrollView>
   );

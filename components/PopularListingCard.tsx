@@ -14,14 +14,13 @@ import { ThemedText } from "./ThemedText";
 import { addSavedPlace, removeSavedPlace } from "@/store/eventSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "expo-router";
-import { useSavePlaceActions } from "@/utils";
+import { useSavePlaceActions } from "@/utils/utils";
 
 const { width } = Dimensions.get("window");
-const PopularListCard = ({ item, isSaveable = true }: any, key?: any) => {
+const PopularListCard = ({ item, isSaveable = true }: any, key: any) => {
   const { savePlace, unsavePlace } = useSavePlaceActions();
 
   const router = useRouter();
-  console.log("item?.image", item?.image);
 
   const savedPlaces = useSelector((state: any) => state.events.savedPlaces);
   const savedIds = savedPlaces?.map((item: any) => {
@@ -43,23 +42,30 @@ const PopularListCard = ({ item, isSaveable = true }: any, key?: any) => {
             },
           });
         }}
+        onLongPress={() => {
+          savedIds.includes(item?.id) ? unsavePlace(item?.id) : savePlace(item);
+        }}
       >
         <View style={{ position: "relative", width: "100%" }}>
           {isSaveable ? (
             <Image
+              key={key}
               source={{ uri: item?.imageUrl }}
               resizeMode="cover"
               style={styles.image}
             />
           ) : (
             <Image
+              key={key}
               source={{ uri: item?.xlargeimageurl }}
               resizeMode="cover"
               style={styles.image}
             />
           )}
 
-          <Text style={styles.overlayTitle}>{item?.title}</Text>
+          <Text key={key} style={styles.overlayTitle}>
+            {item?.title}
+          </Text>
 
           {isSaveable ? (
             <TouchableOpacity
@@ -69,11 +75,22 @@ const PopularListCard = ({ item, isSaveable = true }: any, key?: any) => {
                   : savePlace(item);
               }}
               style={styles.heartIcon}
+              key={key}
             >
               {savedIds.includes(item?.id) ? (
-                <FontAwesomeIcon icon={faHeart} size={24} color="red" />
+                <FontAwesomeIcon
+                  key={key}
+                  icon={faHeart}
+                  size={24}
+                  color="red"
+                />
               ) : (
-                <FontAwesomeIcon icon={faHeartRegular} size={24} color="red" />
+                <FontAwesomeIcon
+                  key={key}
+                  icon={faHeartRegular}
+                  size={24}
+                  color="red"
+                />
               )}
             </TouchableOpacity>
           ) : null}

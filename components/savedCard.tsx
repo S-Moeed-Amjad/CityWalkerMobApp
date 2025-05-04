@@ -13,7 +13,7 @@ import { faHeart } from "@fortawesome/free-solid-svg-icons";
 import { ThemedText } from "./ThemedText";
 import { addSavedPlace, removeSavedPlace } from "@/store/eventSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { useSavePlaceActions } from "@/utils";
+import { useSavePlaceActions } from "@/utils/utils";
 import { useRouter } from "expo-router";
 
 const { width } = Dimensions.get("window");

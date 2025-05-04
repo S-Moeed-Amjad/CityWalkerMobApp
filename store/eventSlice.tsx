@@ -1,12 +1,13 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { savePlacesToStorage } from "@/utils";
+import { savePlacesToStorage } from "@/utils/sharedUtils";
 
 interface EventsState {
   events: any[];
   popularPlaces: any[];
   savedPlaces: any[];
   isLoading: boolean;
+  sessionToken?: string;
+  userDetails?: any;
 }
 
 const initialState: EventsState = {
@@ -14,6 +15,8 @@ const initialState: EventsState = {
   popularPlaces: [],
   savedPlaces: [],
   isLoading: true,
+  sessionToken: undefined,
+  userDetails: {},
 };
 
 const eventsSlice = createSlice({
@@ -22,6 +25,12 @@ const eventsSlice = createSlice({
   reducers: {
     setIsLoading: (state, action: PayloadAction<boolean>) => {
       state.isLoading = action.payload;
+    },
+    setUserDetails: (state, action: PayloadAction<any>) => {
+      state.userDetails = action.payload;
+    },
+    setSessionToken: (state, action: PayloadAction<string>) => {
+      state.sessionToken = action.payload;
     },
     setEvents: (state, action: PayloadAction<any[]>) => {
       state.events = action.payload;
@@ -53,6 +62,8 @@ export const {
   addSavedPlace,
   removeSavedPlace,
   setIsLoading,
+  setSessionToken,
+  setUserDetails,
 } = eventsSlice.actions;
 
 export default eventsSlice.reducer;

@@ -1,18 +1,6 @@
-import {
-  StyleSheet,
-  Image,
-  Platform,
-  SafeAreaView,
-  FlatList,
-  View,
-} from "react-native";
-
-import { Collapsible } from "@/components/Collapsible";
-import { ExternalLink } from "@/components/ExternalLink";
+import { StyleSheet, SafeAreaView, View } from "react-native";
 import ParallaxScrollView from "@/components/ParallaxScrollView";
 import { ThemedText } from "@/components/ThemedText";
-import { ThemedView } from "@/components/ThemedView";
-import { IconSymbol } from "@/components/ui/IconSymbol";
 import PopularListCard from "@/components/PopularListingCard";
 import { useSelector } from "react-redux";
 
@@ -23,13 +11,17 @@ export default function SavedPlacesScreen() {
       headerBackgroundColor={{ light: "#D0D0D0", dark: "#353636" }}
     >
       <ThemedText type="subtitle">Saved Places</ThemedText>
-      <SafeAreaView>
-        {savedPlaces?.map((item: any) => (
-          <View key={item.id}>
-            <PopularListCard item={item} />
-          </View>
-        ))}
-      </SafeAreaView>
+      {savedPlaces.length > 0 ? (
+        <SafeAreaView>
+          {savedPlaces?.map((item: any) => (
+            <View key={item.id}>
+              <PopularListCard item={item} />
+            </View>
+          ))}
+        </SafeAreaView>
+      ) : (
+        <ThemedText>You have no saved places</ThemedText>
+      )}{" "}
     </ParallaxScrollView>
   );
 }

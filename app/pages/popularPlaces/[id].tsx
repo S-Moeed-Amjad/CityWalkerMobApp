@@ -17,7 +17,7 @@ import { useLocalSearchParams, Stack } from "expo-router";
 import { ThemedView } from "@/components/ThemedView";
 import { ThemedText } from "@/components/ThemedText";
 import { Feather, FontAwesome } from "@expo/vector-icons";
-import { StarRating, useSavePlaceActions } from "@/utils";
+import { StarRating, useSavePlaceActions } from "@/utils/utils";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faHeart } from "@fortawesome/free-solid-svg-icons";
 import { faHeart as faHeartRegular } from "@fortawesome/free-regular-svg-icons";
@@ -36,8 +36,6 @@ const PopularDetail = () => {
   );
   const data = popularPlacesList?.filter((item: any) => item?.id === id);
   const { savePlace, unsavePlace } = useSavePlaceActions();
-  console.log("data==>", data);
-
   const photos = data[0]?.photos || [];
 
   const getPhotoUrl = (photoName: string) => {
@@ -59,7 +57,7 @@ const PopularDetail = () => {
   };
 
   const staticMapUrl = `https://maps.googleapis.com/maps/api/staticmap?center=${data[0]?.location?.latitude},${data[0]?.location?.longitude}&zoom=15&size=600x300&markers=color:red%7C${data[0]?.location?.latitude},${data[0]?.location?.longitude}&key=AIzaSyDQGzPSATlTYsh59eE7S8FBWJh3I8VI9Zk`;
-  console.log("url", staticMapUrl);
+
   const makeCall = (phoneNumber: string) => {
     Linking.openURL(`tel:${phoneNumber}`);
   };
@@ -69,6 +67,8 @@ const PopularDetail = () => {
         options={{
           title: "",
           headerBackTitle: "Back",
+          headerBackButtonDisplayMode: "minimal",
+
           headerRight: () => (
             <Pressable
               onPress={() => {

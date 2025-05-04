@@ -10,7 +10,7 @@ import {
 import { Alert } from "react-native";
 import axios from "axios";
 import * as Location from "expo-location";
-import { getDateRangeForMonth, getPlacesFromStorage } from "@/utils";
+import { getDateRangeForMonth, getPlacesFromStorage } from "@/utils/utils";
 
 const LoadPlacesOnStart = () => {
   const dispatch = useDispatch();
@@ -74,10 +74,6 @@ const LoadPlacesOnStart = () => {
 
       dispatch(setPopularPlaces(places));
     } catch (error: any) {
-      console.log(
-        "Error fetching nearby places:",
-        error.response?.data || error.message
-      );
       dispatch(setPopularPlaces([]));
 
       Alert.alert(
@@ -98,8 +94,6 @@ const LoadPlacesOnStart = () => {
       return city;
     }
   };
-  console.log("Today", today, "end of the month", endOfMonth, "city", city);
-
   const fetchNearbyEvents = async () => {
     const url = `https://www.skiddle.com/api/v1/events/search/?api_key=04231e8501c33986ba543ea271491d62&latitude=${
       location?.latitude ?? 52.4826
@@ -129,15 +123,9 @@ const LoadPlacesOnStart = () => {
     try {
       const response = await axios.get(url);
       const events = response.data || [];
-      console.log("eventss", events);
-
       dispatch(setEvents(events?.results));
       dispatch(setIsLoading(false));
     } catch (error: any) {
-      console.log(
-        "Error fetching nearby events:",
-        error.response?.data || error.message
-      );
       dispatch(setEvents([]));
       dispatch(setIsLoading(false));
     }
@@ -145,8 +133,6 @@ const LoadPlacesOnStart = () => {
 
   useEffect(() => {
     fetchLocation();
-    console.log("here");
-
     const loadData = async () => {
       const saved = await getPlacesFromStorage();
       if (saved) dispatch(setSavedPlaces(saved));
