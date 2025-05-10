@@ -8,12 +8,17 @@ import { useState } from "react";
 
 export default function EventsScreen() {
   const events = useSelector((state: any) => state.events.events);
-  const EventsList = events?.map((item: any) => {
-    return { ...item, title: item?.eventname, image: item?.xlargeimageurlWebP };
-  });
+
+  const EventsList = events?.map((item: any) => ({
+    ...item,
+    title: item?.eventname,
+    image: item?.xlargeimageurlWebP,
+  }));
+
   const [value, setValue] = useState<string>();
   const [items, setItems] = useState([
-    { label: "None", value: undefined },
+    //Filter Values
+    { label: "All", value: undefined },
     { label: "Festivals", value: "FEST" },
     { label: "Live music", value: "LIVE" },
     { label: "Clubbing/Dance music", value: "CLUB" },
@@ -28,15 +33,18 @@ export default function EventsScreen() {
     { label: "The Arts", value: "ARTS" },
   ]);
 
-  const filteredEvents = EventsList?.filter((item: any) => {
-    return value !== "NONE" ? item?.EventCode === value : true;
-  });
+  const filteredEvents = EventsList?.filter((item: any) =>
+    value ? item?.EventCode === value : true
+  );
+
+  const renderEvents = filteredEvents ?? [];
 
   return (
     <ParallaxScrollView
       headerBackgroundColor={{ light: "#D0D0D0", dark: "#353636" }}
     >
-      <ThemedText type="subtitle">Events Near by</ThemedText>
+      <ThemedText type="subtitle">Events Nearby</ThemedText>
+
       <MultiSelectDropdown
         value={value}
         setValue={setValue}
@@ -44,10 +52,21 @@ export default function EventsScreen() {
         setItems={setItems}
         isMulti={false}
       />
+
       <SafeAreaView style={{ minHeight: 155 }}>
-        {(value ? filteredEvents : EventsList)?.map((item: any) => (
-          <PopularListCard key={item.id} item={item} isSaveable={false} />
-        ))}
+        {renderEvents.length > 0 ? (
+          renderEvents.map((item: any, index: number) => (
+            <PopularListCard
+              key={item.id || `${item.title}-${index}`}
+              item={item}
+              isSaveable={false}
+            />
+          ))
+        ) : (
+          <View style={styles.emptyContainer}>
+            <ThemedText type="default">No events found.</ThemedText>
+          </View>
+        )}
       </SafeAreaView>
     </ParallaxScrollView>
   );
@@ -57,5 +76,10 @@ const styles = StyleSheet.create({
   titleContainer: {
     flexDirection: "row",
     gap: 8,
+  },
+  emptyContainer: {
+    alignItems: "center",
+    justifyContent: "center",
+    paddingVertical: 20,
   },
 });

@@ -18,6 +18,7 @@ import { Colors } from "@/constants/Colors";
 import { useColorScheme } from "@/hooks/useColorScheme.web";
 import { ThemedText } from "@/components/ThemedText";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { API_URL } from "@env";
 const { width } = Dimensions.get("window");
 const SignupScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
   const colorScheme = useColorScheme();
@@ -40,15 +41,12 @@ const SignupScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
 
     setIsLoading(true);
     try {
-      const response = await axios.post(
-        "http://192.168.0.55:5500/api/auth/signup",
-        {
-          email,
-          password,
-          firstName,
-          lastName,
-        }
-      );
+      const response = await axios.post(`${API_URL}/auth/signup`, {
+        email,
+        password,
+        firstName,
+        lastName,
+      });
       Alert.alert("Success", response.data.message);
       router.push("/pages/LoginScreen");
     } catch (error: any) {
@@ -99,7 +97,7 @@ const SignupScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
       />
 
       <ThemedView style={styles.container}>
-        <View
+        <View //header logo
           style={{
             display: "flex",
             flexDirection: "row",
@@ -115,7 +113,7 @@ const SignupScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
             Walker
           </Text>
         </View>
-        <View
+        <View //firstname & lastname
           style={{
             display: "flex",
             flexDirection: "row",
@@ -180,7 +178,7 @@ const SignupScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
           }}
           secureTextEntry
         />
-        <TouchableOpacity
+        <TouchableOpacity //signuo
           style={[styles.signupButton, isLoading && { opacity: 0.7 }]}
           onPress={handleSignup}
           disabled={isLoading}
@@ -198,7 +196,7 @@ const SignupScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
             </Text>
           )}
         </TouchableOpacity>
-        <View
+        <View //redirect to login
           style={{
             flexDirection: "row",
             justifyContent: "center",
@@ -231,7 +229,7 @@ const SignupScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
         >
           <ThemedText>Or</ThemedText>
         </View>
-        <View
+        <View //skip
           style={{
             flexDirection: "row",
             justifyContent: "center",

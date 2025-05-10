@@ -4,23 +4,16 @@ import {
   Image,
   ScrollView,
   StyleSheet,
-  View,
-  NativeScrollEvent,
-  NativeSyntheticEvent,
-  Pressable,
   Linking,
   TouchableOpacity,
-  Text,
 } from "react-native";
 import { useSelector } from "react-redux";
 import { useLocalSearchParams, Stack } from "expo-router";
 import { ThemedView } from "@/components/ThemedView";
 import { ThemedText } from "@/components/ThemedText";
-import { Feather, FontAwesome } from "@expo/vector-icons";
-import { StarRating, useSavePlaceActions } from "@/utils/utils";
-import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { faHeart } from "@fortawesome/free-solid-svg-icons";
-import { faHeart as faHeartRegular } from "@fortawesome/free-regular-svg-icons";
+import { Feather } from "@expo/vector-icons";
+import { StarRating } from "@/utils/utils";
+import { API_KEY } from "@env";
 
 const { width } = Dimensions.get("window");
 
@@ -39,7 +32,7 @@ const EventDetail = () => {
     }
   };
 
-  const staticMapUrl = `https://maps.googleapis.com/maps/api/staticmap?center=${data[0]?.venue?.latitude},${data[0]?.venue?.longitude}&zoom=15&size=600x300&markers=color:red%7C${data[0]?.venue?.latitude},${data[0]?.venue?.longitude}&key=AIzaSyDQGzPSATlTYsh59eE7S8FBWJh3I8VI9Zk`;
+  const staticMapUrl = `https://maps.googleapis.com/maps/api/staticmap?center=${data[0]?.venue?.latitude},${data[0]?.venue?.longitude}&zoom=15&size=600x300&markers=color:red%7C${data[0]?.venue?.latitude},${data[0]?.venue?.longitude}&key=${API_KEY}`;
 
   const makeCall = (phoneNumber: string) => {
     Linking.openURL(`tel:${phoneNumber}`);
@@ -60,7 +53,7 @@ const EventDetail = () => {
       />
 
       <ThemedView>
-        {data[0]?.xlargeimageurl?.length > 0 ? (
+        {data[0]?.xlargeimageurl?.length > 0 ? ( // Cover Image
           <ScrollView
             horizontal
             pagingEnabled
@@ -89,10 +82,18 @@ const EventDetail = () => {
           <ThemedText type="subtitle">{data[0]?.eventname}</ThemedText>
 
           <ThemedText type="title">About</ThemedText>
+          {
+            //summary
+          }
           <StarRating rating={data[0]?.venue?.rating ?? 0} />
-
+          {
+            //rating
+          }
           <ThemedText type="default">{data[0]?.description}</ThemedText>
           <ThemedView style={styles.callendarContainer}>
+            {
+              //date and time
+            }
             <Feather name="calendar" size={20} color="#40bfff" />
             <ThemedText>
               {getDayFromDate(data[0]?.date)} {data[0]?.date}
@@ -106,6 +107,9 @@ const EventDetail = () => {
             </ThemedText>
           </ThemedView>
           <ThemedView style={styles.callendarContainer}>
+            {
+              //min age
+            }
             <Feather name="user" size={20} color="#40bfff" />
             <ThemedText>
               Minimum Age:
@@ -113,6 +117,9 @@ const EventDetail = () => {
             </ThemedText>
           </ThemedView>
           <ThemedView style={styles.callendarContainer}>
+            {
+              //price
+            }
             <Feather name="dollar-sign" size={20} color="#40bfff" />
             <ThemedText>
               Ticket Price: £{data[0]?.ticketpricing?.minPrice}
@@ -144,10 +151,8 @@ const EventDetail = () => {
               {data[0]?.link}
             </ThemedText>
           </TouchableOpacity>
-
           <ThemedText type="title">Location</ThemedText>
         </ThemedView>
-
         <TouchableOpacity
           onPress={() => openLink(mapsLink)}
           style={styles.container}

@@ -16,11 +16,11 @@ import { useSelector } from "react-redux";
 import { useLocalSearchParams, Stack } from "expo-router";
 import { ThemedView } from "@/components/ThemedView";
 import { ThemedText } from "@/components/ThemedText";
-import { Feather, FontAwesome } from "@expo/vector-icons";
 import { StarRating, useSavePlaceActions } from "@/utils/utils";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faHeart } from "@fortawesome/free-solid-svg-icons";
 import { faHeart as faHeartRegular } from "@fortawesome/free-regular-svg-icons";
+import { API_KEY } from "@env";
 
 const { width } = Dimensions.get("window");
 
@@ -39,8 +39,7 @@ const PopularDetail = () => {
   const photos = data[0]?.photos || [];
 
   const getPhotoUrl = (photoName: string) => {
-    const apiKey = "AIzaSyDQGzPSATlTYsh59eE7S8FBWJh3I8VI9Zk";
-    return `https://places.googleapis.com/v1/${photoName}/media?key=${apiKey}&maxHeightPx=400&maxWidthPx=400`;
+    return `https://places.googleapis.com/v1/${photoName}/media?key=${API_KEY}&maxHeightPx=400&maxWidthPx=400`;
   };
 
   const handleScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
@@ -56,14 +55,14 @@ const PopularDetail = () => {
     }
   };
 
-  const staticMapUrl = `https://maps.googleapis.com/maps/api/staticmap?center=${data[0]?.location?.latitude},${data[0]?.location?.longitude}&zoom=15&size=600x300&markers=color:red%7C${data[0]?.location?.latitude},${data[0]?.location?.longitude}&key=AIzaSyDQGzPSATlTYsh59eE7S8FBWJh3I8VI9Zk`;
+  const staticMapUrl = `https://maps.googleapis.com/maps/api/staticmap?center=${data[0]?.location?.latitude},${data[0]?.location?.longitude}&zoom=15&size=600x300&markers=color:red%7C${data[0]?.location?.latitude},${data[0]?.location?.longitude}&key=${API_KEY}`;
 
   const makeCall = (phoneNumber: string) => {
     Linking.openURL(`tel:${phoneNumber}`);
   };
   return (
     <ScrollView showsVerticalScrollIndicator>
-      <Stack.Screen
+      <Stack.Screen //header option including Logo, save/ unsave, back button
         options={{
           title: "",
           headerBackTitle: "Back",
@@ -89,10 +88,9 @@ const PopularDetail = () => {
           ),
         }}
       />
-
       <ThemedView>
         {photos?.length > 0 ? (
-          <ScrollView
+          <ScrollView //images carosell
             horizontal
             pagingEnabled
             showsHorizontalScrollIndicator={false}
@@ -119,9 +117,9 @@ const PopularDetail = () => {
             style={styles.image}
           />
         )}
-
-        {/* Pagination Dots */}
-        <View style={styles.dotsContainer}>
+        <View //Pagination Dots
+          style={styles.dotsContainer}
+        >
           {photos?.map((_: any, index: number) => (
             <View
               key={index}
@@ -134,18 +132,15 @@ const PopularDetail = () => {
         </View>
         <ThemedView style={styles.titleContainer}>
           <ThemedText type="subtitle">{data[0]?.title}</ThemedText>
-
           <ThemedText type="title">About</ThemedText>
           <StarRating rating={data[0]?.rating ?? 0} />
-
           <ThemedText type="default">
             {data[0]?.editorialSummary?.text}
           </ThemedText>
-
           <ThemedText type="subtitle">Address:</ThemedText>
           <ThemedText>{data[0]?.formattedAddress}</ThemedText>
           <ThemedText type="subtitle">Contact:</ThemedText>
-          <TouchableOpacity
+          <TouchableOpacity //phone number
             onPress={() => makeCall(data[0]?.nationalPhoneNumber)}
           >
             <ThemedText
@@ -154,7 +149,6 @@ const PopularDetail = () => {
               Local: {data[0]?.nationalPhoneNumber}
             </ThemedText>
           </TouchableOpacity>
-
           <TouchableOpacity
             onPress={() => makeCall(data[0]?.internationalPhoneNumber)}
           >
@@ -175,8 +169,9 @@ const PopularDetail = () => {
               {data[0]?.websiteUri}
             </ThemedText>
           </TouchableOpacity>
-
-          <ThemedText type="subtitle">
+          <ThemedText // Timimgs
+            type="subtitle"
+          >
             <Text>Timings</Text>
           </ThemedText>
           {data[0]?.regularOpeningHours?.weekdayDescriptions?.map(
@@ -186,11 +181,9 @@ const PopularDetail = () => {
               </ThemedView>
             )
           )}
-
           <ThemedText type="title">Location</ThemedText>
         </ThemedView>
-
-        <TouchableOpacity
+        <TouchableOpacity //location Pin & redirect to ggogle maps
           onPress={() => openLink(data[0]?.googleMapsUri)}
           style={styles.container}
         >

@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import {
   View,
   TextInput,
-  Button,
   Alert,
   StyleSheet,
   ScrollView,
@@ -12,14 +11,15 @@ import {
   ActivityIndicator,
 } from "react-native";
 import axios from "axios";
-import { router, Stack, useRouter } from "expo-router";
+import { Stack, useRouter } from "expo-router";
 import { ThemedView } from "@/components/ThemedView";
 import { Colors } from "@/constants/Colors";
 import { useColorScheme } from "@/hooks/useColorScheme.web";
 import { ThemedText } from "@/components/ThemedText";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 const { width } = Dimensions.get("window");
-const SignupScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
+import { API_URL } from "@env";
+const LoginScreen = () => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const skipLogin = async () => {
@@ -32,16 +32,14 @@ const SignupScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
     if (loading) return;
     const isValid = validateAndSubmit();
     if (!isValid) return;
+    console.log("env", API_URL);
 
     setLoading(true);
     try {
-      const response = await axios.post(
-        "http://192.168.0.55:5500/api/auth/login",
-        {
-          email,
-          password,
-        }
-      );
+      const response = await axios.post(`${API_URL}/auth/login`, {
+        email,
+        password,
+      });
 
       const token = response.data.token;
       const userDetails = response.data.userDetails;
@@ -101,7 +99,7 @@ const SignupScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
       />
 
       <ThemedView style={styles.container}>
-        <View
+        <View //header logo
           style={{
             display: "flex",
             flexDirection: "row",
@@ -141,7 +139,7 @@ const SignupScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
           }}
           secureTextEntry
         />
-        <TouchableOpacity
+        <TouchableOpacity //forgot password
           onPress={() => {
             router.push("/pages/forgotPassword");
           }}
@@ -152,7 +150,7 @@ const SignupScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
             Forgot Password
           </ThemedText>
         </TouchableOpacity>
-        <TouchableOpacity
+        <TouchableOpacity //login button
           style={[styles.signupButton, loading && { opacity: 0.7 }]}
           onPress={handleLogin}
           disabled={loading}
@@ -170,7 +168,7 @@ const SignupScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
             </Text>
           )}
         </TouchableOpacity>
-        <View
+        <View //redirect to signup
           style={{
             flexDirection: "row",
             justifyContent: "center",
@@ -203,7 +201,7 @@ const SignupScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
         >
           <ThemedText>Or</ThemedText>
         </View>
-        <View
+        <View //skip
           style={{
             flexDirection: "row",
             justifyContent: "center",
@@ -225,7 +223,7 @@ const SignupScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
   );
 };
 
-export default SignupScreen;
+export default LoginScreen;
 
 const styles = StyleSheet.create({
   container: {

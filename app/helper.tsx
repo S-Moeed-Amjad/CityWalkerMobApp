@@ -11,6 +11,7 @@ import { Alert } from "react-native";
 import axios from "axios";
 import * as Location from "expo-location";
 import { getDateRangeForMonth, getPlacesFromStorage } from "@/utils/utils";
+import { API_KEY } from "@env";
 
 const LoadPlacesOnStart = () => {
   const dispatch = useDispatch();
@@ -37,10 +38,8 @@ const LoadPlacesOnStart = () => {
 
     const headers = {
       "Content-Type": "application/json",
-      "X-Goog-Api-Key": "AIzaSyDQGzPSATlTYsh59eE7S8FBWJh3I8VI9Zk", // Replace with your key
-      // "X-Goog-FieldMask": "*",
+      "X-Goog-Api-Key": `${API_KEY}`,
     };
-
     const body = {
       includedTypes: ["tourist_attraction"], // add something useful
       maxResultCount: 20,
@@ -62,8 +61,7 @@ const LoadPlacesOnStart = () => {
         response.data?.places.map((item: any) => {
           const photoRef = item?.photos?.[0]?.name; // e.g., "places/ChIJrTLr-GyuEmsRBfy61i59si0/photos/..."
           const getPhotoUrl = (photoName: string) => {
-            const apiKey = "AIzaSyDQGzPSATlTYsh59eE7S8FBWJh3I8VI9Zk"; // Replace with your key
-            return `https://places.googleapis.com/v1/${photoName}/media?key=${apiKey}&maxHeightPx=400&maxWidthPx=400`;
+            return `https://places.googleapis.com/v1/${photoName}/media?key=${API_KEY}&maxHeightPx=400&maxWidthPx=400`;
           };
           return {
             ...item,

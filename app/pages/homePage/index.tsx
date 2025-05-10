@@ -83,7 +83,7 @@ const HomeScreen = () => {
             </TouchableOpacity>
           </View>
           {popularPlacesList?.length > 0 ? (
-            <PopularCarosel data={popularPlacesList.slice(0, 6)} />
+            <PopularCarosel data={popularPlacesList.slice(0, 6)} /> //custom component to display popular places
           ) : (
             <ThemedText
               style={{
@@ -114,7 +114,7 @@ const HomeScreen = () => {
           </View>
           <View>
             {events?.length > 0 ? (
-              <EventCarosel
+              <EventCarosel //custom component to display Events nearby
                 data={events.length > 0 ? events.slice(0, 6) : []}
               />
             ) : (
@@ -148,7 +148,7 @@ const HomeScreen = () => {
           </View>
           <View>
             {savedPlaces?.length > 0 ? (
-              <SavedCarosel
+              <SavedCarosel //custom component to display saved places
                 data={savedPlaces.length > 0 ? savedPlaces.slice(0, 6) : []}
               />
             ) : (

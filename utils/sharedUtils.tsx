@@ -1,7 +1,4 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { router } from "expo-router";
-import { setUserDetails } from "@/store/eventSlice";
-import { useDispatch } from "react-redux";
 const STORAGE_KEY = "saved_places";
 
 const savePlacesToStorage = async (places: any[]) => {

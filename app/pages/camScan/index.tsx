@@ -9,7 +9,6 @@ import {
   Linking,
   ActivityIndicator,
 } from "react-native";
-import { Camera, CameraType, CameraView } from "expo-camera";
 import * as ImagePicker from "expo-image-picker";
 import { ThemedView } from "@/components/ThemedView";
 import { Ionicons } from "@expo/vector-icons";
@@ -18,16 +17,14 @@ import { useColorScheme } from "@/hooks/useColorScheme";
 import { ThemedText } from "@/components/ThemedText";
 import axios from "axios";
 import { StarRating } from "@/utils/utils";
+import { API_KEY } from "@env";
 export default function CamScanPage() {
-  const API_KEY = "AIzaSyDQGzPSATlTYsh59eE7S8FBWJh3I8VI9Zk";
   const colorScheme = useColorScheme();
   const [imageUri, setImageUri] = useState<string | null>(null);
   const [result, setResult] = useState<any[]>([]);
-  const [placeId, setPlaceId] = useState<any>();
   const [placeDetail, setPlaceDetail] = useState<any>();
   const [loadingData, setLoadingData] = useState<boolean>(true);
   const { height: screenHeight } = Dimensions.get("window");
-  const cameraRef = useRef<any>(null);
   const makeCall = (phoneNumber: string) => {
     Linking.openURL(`tel:${phoneNumber}`);
   };
@@ -70,6 +67,7 @@ export default function CamScanPage() {
     }
   };
   const getPlaceIdFromText = async (query: string) => {
+    //fetch PlaceId of the place from the name
     const res = await axios.get(
       `https://maps.googleapis.com/maps/api/place/textsearch/json`,
       {
@@ -80,11 +78,10 @@ export default function CamScanPage() {
       }
     );
     getPlaceDescription(res.data.results[0]?.place_id);
-
-    setPlaceId(res.data.results[0]?.place_id);
     return res.data.results[0]?.place_id;
   };
   const getPlaceDescription = async (placeId: string) => {
+    //Fetch details against the placeId
     const url = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${placeId}&fields=name,international_phone_number,formatted_phone_number,opening_hours,rating,website,formatted_address,current_opening_hours,editorial_summary&key=${API_KEY}`;
 
     try {
@@ -107,7 +104,7 @@ export default function CamScanPage() {
   };
 
   const sendToGoogleVision = async (base64?: string) => {
-    const apiKey = "AIzaSyDQGzPSATlTYsh59eE7S8FBWJh3I8VI9Zk"; // 🔒 Store securely, don't hardcode in production
+    //fetch name of the place
     const requestPayload = {
       requests: [
         {
@@ -118,7 +115,7 @@ export default function CamScanPage() {
     };
     try {
       const response = await fetch(
-        `https://vision.googleapis.com/v1/images:annotate?key=${apiKey}`,
+        `https://vision.googleapis.com/v1/images:annotate?key=${API_KEY}`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -126,7 +123,6 @@ export default function CamScanPage() {
         }
       );
       const json = await response.json();
-
       const landmarkAnnotations = json?.responses?.[0]?.landmarkAnnotations;
       if (Array.isArray(landmarkAnnotations)) {
         setResult(landmarkAnnotations);
@@ -141,7 +137,6 @@ export default function CamScanPage() {
       setLoadingData(false);
     }
   };
-
   useEffect(() => {
     if (result[0]?.description) {
       getPlaceIdFromText(result[0]?.description);

@@ -2,6 +2,7 @@ import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { Colors } from "@/constants/Colors";
 import { useColorScheme } from "@/hooks/useColorScheme.web";
+import { API_URL } from "@env";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import { router, Stack } from "expo-router";
@@ -13,8 +14,6 @@ import {
   TouchableOpacity,
   StyleSheet,
   Alert,
-  KeyboardAvoidingView,
-  Platform,
   ActivityIndicator,
   ScrollView,
 } from "react-native";
@@ -33,13 +32,10 @@ export default function ForgotPasswordScreen() {
 
     setLoading(true);
     try {
-      const response = await axios.put(
-        "http://192.168.0.55:5500/api/auth/forgetpassword",
-        {
-          email,
-          newPassword,
-        }
-      );
+      const response = await axios.put(`${API_URL}/auth/forgetpassword`, {
+        email,
+        newPassword,
+      });
 
       Alert.alert("Password Reset Successfull", response?.data?.message);
       router.push("/pages/LoginScreen");
@@ -65,7 +61,7 @@ export default function ForgotPasswordScreen() {
       />
 
       <ThemedView style={styles.container}>
-        <View
+        <View //header logo
           style={{
             display: "flex",
             flexDirection: "row",
@@ -111,7 +107,7 @@ export default function ForgotPasswordScreen() {
           secureTextEntry
         />
 
-        <TouchableOpacity
+        <TouchableOpacity //submit button
           style={[styles.button, loading && { opacity: 0.7 }]}
           onPress={handleResetPassword}
           disabled={loading}
@@ -129,7 +125,7 @@ export default function ForgotPasswordScreen() {
             </Text>
           )}
         </TouchableOpacity>
-        <View
+        <View //redirect to sign up
           style={{
             flexDirection: "row",
             justifyContent: "center",

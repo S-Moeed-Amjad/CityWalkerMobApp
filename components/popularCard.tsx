@@ -41,7 +41,7 @@ const Card = ({ item }: any, key?: any) => {
           });
         }}
       >
-        <Image
+        <Image //image background
           source={{
             uri: error
               ? "https://via.placeholder.com/150?text=No+Image"
@@ -52,7 +52,7 @@ const Card = ({ item }: any, key?: any) => {
           resizeMode="cover"
           style={styles?.image}
         />
-        <TouchableOpacity
+        <TouchableOpacity //heart icon to save
           onPress={() => {
             savedIds.includes(item?.id)
               ? unsavePlace(item?.id)

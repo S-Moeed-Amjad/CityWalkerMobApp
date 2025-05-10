@@ -23,6 +23,7 @@ const getPlacesFromStorage = async (): Promise<any[] | null> => {
   }
 };
 const getDateRangeForMonth = () => {
+  //date range for 1 month for the events within the current month
   const today = new Date();
 
   const year = today.getFullYear();
@@ -44,6 +45,7 @@ const getDateRangeForMonth = () => {
 };
 
 const fetchLocation = async () => {
+  //Get current location
   try {
     const { status } = await Location.requestForegroundPermissionsAsync();
     if (status !== "granted") {
@@ -71,6 +73,7 @@ const useSavePlaceActions = () => {
   return { savePlace, unsavePlace };
 };
 const StarRating = ({
+  //to display rating stars
   rating,
   maxStars = 5,
   size = 20,
