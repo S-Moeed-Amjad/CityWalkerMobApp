@@ -18,7 +18,6 @@ import { useColorScheme } from "@/hooks/useColorScheme.web";
 import { ThemedText } from "@/components/ThemedText";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 const { width } = Dimensions.get("window");
-import { API_URL } from "@env";
 const LoginScreen = () => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
@@ -32,14 +31,17 @@ const LoginScreen = () => {
     if (loading) return;
     const isValid = validateAndSubmit();
     if (!isValid) return;
-    console.log("env", API_URL);
+    console.log("env", process.env.EXPO_PUBLIC_API_URL);
 
     setLoading(true);
     try {
-      const response = await axios.post(`${API_URL}/auth/login`, {
-        email,
-        password,
-      });
+      const response = await axios.post(
+        `${process.env.EXPO_PUBLIC_API_URL}/auth/login`,
+        {
+          email,
+          password,
+        }
+      );
 
       const token = response.data.token;
       const userDetails = response.data.userDetails;

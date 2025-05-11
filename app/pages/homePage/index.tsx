@@ -148,7 +148,7 @@ const HomeScreen = () => {
           </View>
           <View>
             {savedPlaces?.length > 0 ? (
-              <SavedCarosel //custom component to display saved places
+              <SavedCarosel
                 data={savedPlaces.length > 0 ? savedPlaces.slice(0, 6) : []}
               />
             ) : (

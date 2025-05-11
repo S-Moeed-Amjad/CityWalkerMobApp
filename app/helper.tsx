@@ -11,9 +11,10 @@ import { Alert } from "react-native";
 import axios from "axios";
 import * as Location from "expo-location";
 import { getDateRangeForMonth, getPlacesFromStorage } from "@/utils/utils";
-import { API_KEY } from "@env";
 
 const LoadPlacesOnStart = () => {
+  console.log("apikey", process.env.EXPO_PUBLIC_API_KEY);
+
   const dispatch = useDispatch();
   const [location, setLocation] = useState<any>();
   const [city, setCity] = useState<any>();
@@ -38,7 +39,7 @@ const LoadPlacesOnStart = () => {
 
     const headers = {
       "Content-Type": "application/json",
-      "X-Goog-Api-Key": `${API_KEY}`,
+      "X-Goog-Api-Key": `${process.env.EXPO_PUBLIC_API_KEY}`,
     };
     const body = {
       includedTypes: ["tourist_attraction"], // add something useful
@@ -61,7 +62,7 @@ const LoadPlacesOnStart = () => {
         response.data?.places.map((item: any) => {
           const photoRef = item?.photos?.[0]?.name; // e.g., "places/ChIJrTLr-GyuEmsRBfy61i59si0/photos/..."
           const getPhotoUrl = (photoName: string) => {
-            return `https://places.googleapis.com/v1/${photoName}/media?key=${API_KEY}&maxHeightPx=400&maxWidthPx=400`;
+            return `https://places.googleapis.com/v1/${photoName}/media?key=${process.env.EXPO_PUBLIC_API_KEY}&maxHeightPx=400&maxWidthPx=400`;
           };
           return {
             ...item,
@@ -93,7 +94,7 @@ const LoadPlacesOnStart = () => {
     }
   };
   const fetchNearbyEvents = async () => {
-    const url = `https://www.skiddle.com/api/v1/events/search/?api_key=04231e8501c33986ba543ea271491d62&latitude=${
+    const url = `https://www.skiddle.com/api/v1/events/search/?EXPO_PUBLIC_API_KEY=04231e8501c33986ba543ea271491d62&latitude=${
       location?.latitude ?? 52.4826
     }&longitude=${
       location?.longitude ?? -1.8903

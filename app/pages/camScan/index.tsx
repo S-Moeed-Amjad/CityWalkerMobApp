@@ -17,7 +17,6 @@ import { useColorScheme } from "@/hooks/useColorScheme";
 import { ThemedText } from "@/components/ThemedText";
 import axios from "axios";
 import { StarRating } from "@/utils/utils";
-import { API_KEY } from "@env";
 export default function CamScanPage() {
   const colorScheme = useColorScheme();
   const [imageUri, setImageUri] = useState<string | null>(null);
@@ -73,7 +72,7 @@ export default function CamScanPage() {
       {
         params: {
           query,
-          key: API_KEY,
+          key: process.env.EXPO_PUBLIC_API_KEY,
         },
       }
     );
@@ -82,7 +81,7 @@ export default function CamScanPage() {
   };
   const getPlaceDescription = async (placeId: string) => {
     //Fetch details against the placeId
-    const url = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${placeId}&fields=name,international_phone_number,formatted_phone_number,opening_hours,rating,website,formatted_address,current_opening_hours,editorial_summary&key=${API_KEY}`;
+    const url = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${placeId}&fields=name,international_phone_number,formatted_phone_number,opening_hours,rating,website,formatted_address,current_opening_hours,editorial_summary&key=${process.env.EXPO_PUBLIC_API_KEY}`;
 
     try {
       const response = await fetch(url);
@@ -115,7 +114,7 @@ export default function CamScanPage() {
     };
     try {
       const response = await fetch(
-        `https://vision.googleapis.com/v1/images:annotate?key=${API_KEY}`,
+        `https://vision.googleapis.com/v1/images:annotate?key=${process.env.EXPO_PUBLIC_API_KEY}`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },

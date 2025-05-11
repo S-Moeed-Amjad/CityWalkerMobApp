@@ -2,7 +2,6 @@ import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { Colors } from "@/constants/Colors";
 import { useColorScheme } from "@/hooks/useColorScheme.web";
-import { API_URL } from "@env";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import { router, Stack } from "expo-router";
@@ -32,10 +31,13 @@ export default function ForgotPasswordScreen() {
 
     setLoading(true);
     try {
-      const response = await axios.put(`${API_URL}/auth/forgetpassword`, {
-        email,
-        newPassword,
-      });
+      const response = await axios.put(
+        `${process.env.EXPO_PUBLIC_API_URL}/auth/forgetpassword`,
+        {
+          email,
+          newPassword,
+        }
+      );
 
       Alert.alert("Password Reset Successfull", response?.data?.message);
       router.push("/pages/LoginScreen");

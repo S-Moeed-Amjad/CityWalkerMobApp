@@ -13,7 +13,6 @@ import { ThemedView } from "@/components/ThemedView";
 import { ThemedText } from "@/components/ThemedText";
 import { Feather } from "@expo/vector-icons";
 import { StarRating } from "@/utils/utils";
-import { API_KEY } from "@env";
 
 const { width } = Dimensions.get("window");
 
@@ -32,7 +31,7 @@ const EventDetail = () => {
     }
   };
 
-  const staticMapUrl = `https://maps.googleapis.com/maps/api/staticmap?center=${data[0]?.venue?.latitude},${data[0]?.venue?.longitude}&zoom=15&size=600x300&markers=color:red%7C${data[0]?.venue?.latitude},${data[0]?.venue?.longitude}&key=${API_KEY}`;
+  const staticMapUrl = `https://maps.googleapis.com/maps/api/staticmap?center=${data[0]?.venue?.latitude},${data[0]?.venue?.longitude}&zoom=15&size=600x300&markers=color:red%7C${data[0]?.venue?.latitude},${data[0]?.venue?.longitude}&key=${process.env.EXPO_PUBLIC_API_KEY}`;
 
   const makeCall = (phoneNumber: string) => {
     Linking.openURL(`tel:${phoneNumber}`);

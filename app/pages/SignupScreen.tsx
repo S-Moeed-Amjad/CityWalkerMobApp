@@ -18,7 +18,6 @@ import { Colors } from "@/constants/Colors";
 import { useColorScheme } from "@/hooks/useColorScheme.web";
 import { ThemedText } from "@/components/ThemedText";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { API_URL } from "@env";
 const { width } = Dimensions.get("window");
 const SignupScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
   const colorScheme = useColorScheme();
@@ -28,6 +27,7 @@ const SignupScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+
   const skipLogin = async () => {
     const userDetails = { email: "Guest", firstName: "Guest", lastName: "" };
     await AsyncStorage.setItem("userToken", "skip-token-forlogin");
@@ -41,12 +41,15 @@ const SignupScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
 
     setIsLoading(true);
     try {
-      const response = await axios.post(`${API_URL}/auth/signup`, {
-        email,
-        password,
-        firstName,
-        lastName,
-      });
+      const response = await axios.post(
+        `${process.env.EXPO_PUBLIC_API_URL}/auth/signup`,
+        {
+          email,
+          password,
+          firstName,
+          lastName,
+        }
+      );
       Alert.alert("Success", response.data.message);
       router.push("/pages/LoginScreen");
     } catch (error: any) {

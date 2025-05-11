@@ -20,7 +20,6 @@ import { StarRating, useSavePlaceActions } from "@/utils/utils";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faHeart } from "@fortawesome/free-solid-svg-icons";
 import { faHeart as faHeartRegular } from "@fortawesome/free-regular-svg-icons";
-import { API_KEY } from "@env";
 
 const { width } = Dimensions.get("window");
 
@@ -39,7 +38,7 @@ const PopularDetail = () => {
   const photos = data[0]?.photos || [];
 
   const getPhotoUrl = (photoName: string) => {
-    return `https://places.googleapis.com/v1/${photoName}/media?key=${API_KEY}&maxHeightPx=400&maxWidthPx=400`;
+    return `https://places.googleapis.com/v1/${photoName}/media?key=${process.env.EXPO_PUBLIC_API_KEY}&maxHeightPx=400&maxWidthPx=400`;
   };
 
   const handleScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
@@ -55,7 +54,7 @@ const PopularDetail = () => {
     }
   };
 
-  const staticMapUrl = `https://maps.googleapis.com/maps/api/staticmap?center=${data[0]?.location?.latitude},${data[0]?.location?.longitude}&zoom=15&size=600x300&markers=color:red%7C${data[0]?.location?.latitude},${data[0]?.location?.longitude}&key=${API_KEY}`;
+  const staticMapUrl = `https://maps.googleapis.com/maps/api/staticmap?center=${data[0]?.location?.latitude},${data[0]?.location?.longitude}&zoom=15&size=600x300&markers=color:red%7C${data[0]?.location?.latitude},${data[0]?.location?.longitude}&key=${process.env.EXPO_PUBLIC_API_KEY}`;
 
   const makeCall = (phoneNumber: string) => {
     Linking.openURL(`tel:${phoneNumber}`);
